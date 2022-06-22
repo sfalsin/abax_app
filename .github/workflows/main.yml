@@ -18,10 +18,6 @@ jobs:
         with:
           java-version: '12.x'
           distribution: 'adopt'
-      - name: Setup Node 14.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14.x 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -40,7 +36,7 @@ jobs:
 #           name: apk-release
 #           path: build/app/outputs/bundle/release/app-release.apk
       - name: Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.2.2
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.2
         with:
           appId: ${{secrets.FIREBASE_APP_ID}}
           token: ${{secrets.FIREBASE_TOKEN}}
