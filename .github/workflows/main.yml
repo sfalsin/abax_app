@@ -21,8 +21,7 @@ jobs:
       - name: Setup Node 14.x
         uses: actions/setup-node@v3
         with:
-          node-version: 14.x
-          cache: npm          
+          node-version: 14.x 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
