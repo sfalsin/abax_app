@@ -33,6 +33,11 @@ jobs:
         run: flutter build apk #--split-per-abi
       - run: ls -lptra   
       - run: ls -lptra build/app/outputs/apk
+      - name: Build Web App
+        run: |
+          flutter build web
+          cd build/web
+          zip -r web-app.zip .      
 #         uses: actions/upload-artifact@master
 #         with:
 #           name: apk-release
