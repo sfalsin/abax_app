@@ -16,8 +16,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_barcode_scanner:
-    path: ../
+  flutter_barcode_scanner: ^2.0.0
 
   pedantic: ^1.10.0-nullsafety.3
 
