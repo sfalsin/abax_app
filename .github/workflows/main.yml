@@ -21,9 +21,10 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          flutter-version: '2.5.3'
       - run: pwd
-      - run: ls
+      - run: ls -lptra
+      - run: flutter doctor
       - name: Install pub Dependencies
         run: flutter pub get
       - name: Run Tests
