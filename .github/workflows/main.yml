@@ -31,6 +31,7 @@ jobs:
         #run: flutter test
       - name: Build Android App
         run: flutter build apk --debug #--split-per-abi
+      - run: ls -lptra   
 #         uses: actions/upload-artifact@master
 #         with:
 #           name: apk-release
