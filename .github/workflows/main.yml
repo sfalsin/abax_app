@@ -35,6 +35,9 @@ jobs:
 #         with:
 #           name: apk-release
 #           path: build/app/outputs/bundle/release/app-release.apk
+
+      - name: work around permission issue
+        run: git config --global --add safe.directory /github/workspace
       - name: Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.3.3
         with:
@@ -58,8 +61,6 @@ jobs:
 #           cd build/web
 #           zip -r web-app.zip .
 
-      - name: work around permission issue
-        run: git config --global --add safe.directory /github/workspace
       - name: Release Apps
         uses: ncipollo/release-action@v1
         with:
