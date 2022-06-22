@@ -32,7 +32,7 @@ jobs:
       - name: Build Android App
         run: flutter build apk --debug #--split-per-abi
       - run: ls -lptra   
-      - run: ls -lptra build
+      - run: ls -lptra build/app/outputs/
 #         uses: actions/upload-artifact@master
 #         with:
 #           name: apk-release
