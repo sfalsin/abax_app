@@ -31,13 +31,8 @@ jobs:
         #run: flutter test
       - name: Build Android App
         run: flutter build apk #--split-per-abi
-      - run: ls -lptra   
-      - run: ls -lptra build/app/outputs/apk
-      - name: Build Web App
-        run: |
-          flutter build web
-          cd build/web
-          zip -r web-app.zip .      
+#       - run: ls -lptra   
+#       - run: ls -lptra build/app/outputs/apk
 #         uses: actions/upload-artifact@master
 #         with:
 #           name: apk-release
@@ -53,7 +48,18 @@ jobs:
           groups: betatesters
           file: build/app/outputs/apk/release/app-release.apk
           debug: true
-          
+
+      - run: flutter channel beta
+      - run: flutter upgrade
+      - run: flutter config --enable-web
+      - name: Build Web App
+        run: |
+          flutter build web
+          cd build/web
+          zip -r web-app.zip .      
+
+
+
 #       - name: Build iOS App
 #         run: |
 #           flutter build ios --no-codesign
