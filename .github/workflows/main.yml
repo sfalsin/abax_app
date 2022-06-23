@@ -29,8 +29,10 @@ jobs:
         run: flutter pub get
       #- name: Run Tests
         #run: flutter test
-      - name: Build Android App
-        run: flutter build apk #--split-per-abi
+
+#       - name: Build Android App
+#         run: flutter build apk
+
 #       - run: ls -lptra   
 #       - run: ls -lptra build/app/outputs/apk
 #         uses: actions/upload-artifact@master
@@ -38,16 +40,16 @@ jobs:
 #           name: apk-release
 #           path: build/app/outputs/bundle/release/app-release.apk
 
-      - name: work around permission issue
-        run: git config --global --add safe.directory /github/workspace
-      - name: Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.3
-        with:
-          appId: ${{secrets.FIREBASE_ANDROID_APPID}}
-          token: ${{secrets.FIREBASE_TOKEN}}
-          groups: betatesters
-          file: build/app/outputs/apk/release/app-release.apk
-          debug: true
+#       - name: work around permission issue
+#         run: git config --global --add safe.directory /github/workspace
+#       - name: Firebase App Distribution
+#         uses: wzieba/Firebase-Distribution-Github-Action@v1.3.3
+#         with:
+#           appId: ${{secrets.FIREBASE_ANDROID_APPID}}
+#           token: ${{secrets.FIREBASE_TOKEN}}
+#           groups: betatesters
+#           file: build/app/outputs/apk/release/app-release.apk
+#           debug: true
 
       - run: flutter channel beta
       - run: flutter upgrade
@@ -69,11 +71,7 @@ jobs:
 #           ln -s ../Runner.app
 #           cd ..
 #           zip -r app.ipa Payload
-#       - name: Build Web App
-#         run: |
-#           flutter build web
-#           cd build/web
-#           zip -r web-app.zip .
+
 
       - name: Release Apps
         uses: ncipollo/release-action@v1
@@ -81,4 +79,4 @@ jobs:
           tag: ${{ env.APP_VERSION }}
           name: ${{ env.APP_VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: 'build/app/outputs/apk/release/*.apk,build/ios/iphoneos/app.ipa'
+          artifacts: 'build/app/outputs/apk/release/*.apk,build/web/web-app.zip,build/ios/iphoneos/app.ipa'
