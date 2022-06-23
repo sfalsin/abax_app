@@ -30,8 +30,8 @@ jobs:
       #- name: Run Tests
         #run: flutter test
 
-#       - name: Build Android App
-#         run: flutter build apk
+      - name: Build Android App
+        run: flutter build apk
 
 #       - run: ls -lptra   
 #       - run: ls -lptra build/app/outputs/apk
@@ -40,16 +40,16 @@ jobs:
 #           name: apk-release
 #           path: build/app/outputs/bundle/release/app-release.apk
 
-#       - name: work around permission issue
-#         run: git config --global --add safe.directory /github/workspace
-#       - name: Firebase App Distribution
-#         uses: wzieba/Firebase-Distribution-Github-Action@v1.3.3
-#         with:
-#           appId: ${{secrets.FIREBASE_ANDROID_APPID}}
-#           token: ${{secrets.FIREBASE_TOKEN}}
-#           groups: betatesters
-#           file: build/app/outputs/apk/release/app-release.apk
-#           debug: true
+      - name: work around permission issue
+        run: git config --global --add safe.directory /github/workspace
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.3
+        with:
+          appId: ${{secrets.FIREBASE_ANDROID_APPID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: betatesters
+          file: build/app/outputs/apk/release/app-release.apk
+          debug: true
 
       - run: flutter channel beta
       - run: flutter upgrade
