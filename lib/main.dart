@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       
       
       http.Response r = await http.get('https://m6ksrg8yd8.execute-api.us-east-1.amazonaws.com/dev2/freeqr/'+barcodeScanRes.replace("http://app.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?p=",""));
-      log(r.body);
+      print(r.body);
       // _cadastrado = (r.statusCode!=403);
       barcodeScanRes = jsonDecode(r.body);
 
