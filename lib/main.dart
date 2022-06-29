@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +33,17 @@ class _MyAppState extends State<MyApp> {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.QR);
       print(barcodeScanRes);
+
+
+      //var res = await axios.get('https://m6ksrg8yd8.execute-api.us-east-1.amazonaws.com/dev2/free/'+int.parse(barcodeScanRes));
+      
+      
+      http.Response r = await http.get('https://m6ksrg8yd8.execute-api.us-east-1.amazonaws.com/dev2/freeqr/'+barcodeScanRes.replace("http://app.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?p=",""));
+      log(r.body);
+      // _cadastrado = (r.statusCode!=403);
+      barcodeScanRes = jsonDecode(r.body);
+
+
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
@@ -72,7 +84,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-            appBar: AppBar(title: const Text('Barcode scan')),
+            appBar: AppBar(title: const Text('Escanear')),
             body: Builder(builder: (BuildContext context) {
               return Container(
                   alignment: Alignment.center,
@@ -82,13 +94,13 @@ class _MyAppState extends State<MyApp> {
                       children: <Widget>[
                         ElevatedButton(
                             onPressed: () => scanBarcodeNormal(),
-                            child: Text('Start barcode scan')),
+                            child: Text('Escanear produto')),
                         ElevatedButton(
                             onPressed: () => scanQR(),
-                            child: Text('Start QR scan')),
-                        ElevatedButton(
-                            onPressed: () => startBarcodeScanStream(),
-                            child: Text('Start barcode scan stream')),
+                            child: Text('Escanear cupom fiscal')),
+                        // ElevatedButton(
+                        //     onPressed: () => startBarcodeScanStream(),
+                        //     child: Text('Start barcode scan stream')),
                         Text('Scan result : $_scanBarcode\n',
                             style: TextStyle(fontSize: 20))
                       ]));
