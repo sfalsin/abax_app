@@ -35,17 +35,17 @@ flutter_icons:
   ios: true
   image_path: "assets/icons/icon.png"
 
-flutter_native_splash:
-  color: "#9C27B0"
-  image: assets/screen.png
-  branding: assets/screen.png
-  color_dark: "#9C27B0"
-  image_dark: assets/screen.png
-  branding_dark: assets/screen.png
+# flutter_native_splash:
+#   color: "#9C27B0"
+#   image: assets/screen.png
+#   branding: assets/screen.png
+#   color_dark: "#9C27B0"
+#   image_dark: assets/screen.png
+#   branding_dark: assets/screen.png
 
-  android_12:
-    image: assets/screen.png
-    icon_background_color: "#9C27B0"
-    image_dark: assets/screen.png
-    icon_background_color_dark: "#9C27B0"
-  web: false
+#   android_12:
+#     image: assets/screen.png
+#     icon_background_color: "#9C27B0"
+#     image_dark: assets/screen.png
+#     icon_background_color_dark: "#9C27B0"
+#   web: false
