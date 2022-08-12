@@ -1,7 +1,7 @@
 name: flutter_barcode_scanner_example
 description: Demonstrates how to use the flutter_barcode_scanner plugin for Android and iOS.
 publish_to: 'none'
-version: 2.0.0-nullsafety.0
+version: 2.0.0-abax.prototype
 
 environment:
   sdk: '>=2.12.0-0 <3.0.0'
@@ -9,17 +9,43 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.12.2
-  cupertino_icons: ^1.0.1+1
-  flutter_plugin_android_lifecycle: ^2.0.0-nullsafety
+  http: ^0.13.4
+  amazon_cognito_identity_dart_2: ^3.0.0
+  cupertino_icons: ^1.0.5
+  flutter_plugin_android_lifecycle: ^2.0.6
+  syncfusion_flutter_charts: ^20.2.36
+  sized_icon_button: ^0.0.2
+  flutter_json_viewer: ^1.0.1
+  flutter_launcher_icons: ^0.9.3
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_native_splash: ^2.2.4
   flutter_barcode_scanner: ^2.0.0
 
-  pedantic: ^1.10.0-nullsafety.3
+  #pedantic: ^1.10.0-nullsafety.3
 
 flutter:
   uses-material-design: true
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/icon.png"
+
+flutter_native_splash:
+  color: "#9C27B0"
+  image: assets/screen.png
+  branding: assets/screen.png
+  color_dark: "#9C27B0"
+  image_dark: assets/screen.png
+  branding_dark: assets/screen.png
+
+  android_12:
+    image: assets/screen.png
+    icon_background_color: "#9C27B0"
+    image_dark: assets/screen.png
+    icon_background_color_dark: "#9C27B0"
+  web: false

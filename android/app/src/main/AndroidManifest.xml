@@ -14,7 +14,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="flutter_barcode_scanner_example">
+        android:label="ABAX">
         <activity android:name="io.flutter.embedding.android.FlutterActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
