@@ -10,7 +10,7 @@ class CouponService {
   CouponService(this.awsSigV4Client) ;
 
   Future<dynamic> getCoupon(String key, [CognitoUserSession? accessToken]) async {
-    final SigV4Request signedRequest = new SigV4Request(awsSigV4Client, method: 'GET', path: '/qrcode/'+key.replaceAll("http://app.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx?p=",""));
+    final SigV4Request signedRequest = new SigV4Request(awsSigV4Client, method: 'GET', path: '/qrcode/'+key.replaceAll("http://app.sefaz.es.gov.br/ConsultaNFCe/qrcode.aspx","").replaceAll("?",""));
     final url = signedRequest.url;
 
     Map<String, String>? headers;
