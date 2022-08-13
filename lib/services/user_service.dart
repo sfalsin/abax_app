@@ -55,8 +55,22 @@ class UserService {
 
     credentials = CognitoCredentials(cognitoIdentityPoolId, userPool);
     await credentials!.getAwsCredentials(_session?.getIdToken().getJwtToken());
+    print("teste");
     return credentials!;
   }
+
+  /// Retrieve user credentials -- for use with other AWS services
+  Future<CognitoUserSession?> getUserSession() async {
+    if (_cognitoUser == null || _session == null) {
+      return null;
+    }
+
+    // credentials = CognitoCredentials(cognitoIdentityPoolId, userPool);
+    // await credentials!.getAwsCredentials(_session?.getIdToken().getJwtToken());
+    // print("teste");
+    return _session!;
+  }
+
 
   /// Login user
   Future<User?> login(String email, String password) async {

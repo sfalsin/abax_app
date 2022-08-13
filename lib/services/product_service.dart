@@ -11,7 +11,7 @@ class ProductService {
   }
 
   Future<Coupon> getProduct(String key) async {
-    final SigV4Request signedRequest = new SigV4Request(awsSigV4Client, method: 'GET', path: '/free/'+key);
+    final SigV4Request signedRequest = new SigV4Request(awsSigV4Client, method: 'GET', path: '/barcode/'+key);
     final url = signedRequest.url;
 
     Map<String, String>? headers;

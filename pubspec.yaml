@@ -22,7 +22,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  #flutter_native_splash: ^2.2.4
+#  flutter_native_splash: ^2.2.4
   flutter_barcode_scanner: ^2.0.0
 
   #pedantic: ^1.10.0-nullsafety.3
@@ -35,14 +35,14 @@ flutter_icons:
   ios: true
   image_path: "assets/icons/icon.png"
 
-# flutter_native_splash:
+#flutter_native_splash:
 #   color: "#9C27B0"
 #   image: assets/screen.png
 #   branding: assets/screen.png
 #   color_dark: "#9C27B0"
 #   image_dark: assets/screen.png
 #   branding_dark: assets/screen.png
-
+#
 #   android_12:
 #     image: assets/screen.png
 #     icon_background_color: "#9C27B0"

@@ -45,6 +45,7 @@ class _ResultCouponPageState extends State<ResultCouponPage> {
 
         // get session credentials
         final credentials = await _userService.getCredentials();
+        final accessToken = await _userService.getUserSession();
         if (credentials != null &&
             credentials.accessKeyId != null &&
             credentials.secretAccessKey != null) {
@@ -59,7 +60,7 @@ class _ResultCouponPageState extends State<ResultCouponPage> {
           // get previous count
           _couponService = CouponService(_awsSigV4Client);
           try {
-            _scanBarcode = await _couponService.getCoupon(widget.scanBarcode);
+            _scanBarcode = await _couponService.getCoupon(widget.scanBarcode,accessToken);
           } catch (e) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(e.toString())));
@@ -88,9 +89,7 @@ class _ResultCouponPageState extends State<ResultCouponPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
+    return Scaffold(
             appBar: AppBar(
                 title: const Text('ABAX Leitura de Cupom'),
                 backgroundColor: Colors.purple,
@@ -107,12 +106,13 @@ class _ResultCouponPageState extends State<ResultCouponPage> {
                       Container(child: JsonViewer(_scanBarcode)),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.of(
-                            context,
-                            rootNavigator: true,
-                          ).pop(
-                            context,
-                          );
+                          Navigator.pop(context);
+                          // Navigator.of(
+                          //   context,
+                          //   rootNavigator: true,
+                          // ).pop<void>(
+                          //   context,
+                          // );
                           //Navigator.of(context).maybePop();//Navigator.pop<void>(context);
                         },
                         child: const Text('Voltar!'),
@@ -128,6 +128,6 @@ class _ResultCouponPageState extends State<ResultCouponPage> {
                     return Text("${snapshot.error}");
                   }
                   return CircularProgressIndicator();
-                })));
+                }));
   }
 }

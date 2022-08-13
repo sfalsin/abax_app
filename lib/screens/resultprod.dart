@@ -74,9 +74,7 @@ class _ResultProdPageState extends State<ResultProdPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
+    return Scaffold(
             appBar: AppBar(
                 title: const Text('ABAX Leitura de código de barras'),
                 backgroundColor: Colors.purple,
@@ -93,12 +91,13 @@ class _ResultProdPageState extends State<ResultProdPage> {
                       Container(child: JsonViewer(_scanBarcode)),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.of(
-                            context,
-                            rootNavigator: true,
-                          ).pop(
-                            context,
-                          );
+                          Navigator.pop(context);
+                          // Navigator.of(
+                          //   context,
+                          //   rootNavigator: true,
+                          // ).pop(
+                          //   context,
+                          // );
                           //Navigator.of(context).maybePop();//Navigator.pop<void>(context);
                         },
                         child: const Text('Voltar!'),
@@ -114,6 +113,6 @@ class _ResultProdPageState extends State<ResultProdPage> {
                     return Text("${snapshot.error}");
                   }
                   return CircularProgressIndicator();
-                })));
+                }));
   }
 }
