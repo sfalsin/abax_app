@@ -7,7 +7,7 @@ name: Build and Release Apps
 jobs:
   build:
     name: Build Apps
-    runs-on: macos-latest #ubuntu-latest
+    runs-on: ubuntu-latest #macos-latest #
     steps:
       - name: Export Release Timestamp
         run: echo "APP_VERSION=v$(date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
@@ -21,7 +21,9 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.5.3'
+          flutter-version: '3.0.4' #'2.5.3'
+      - name: Fix dart
+        run: dart fix –apply
       #- run: pwd
       #- run: ls -lptra
       #- run: flutter doctor
@@ -51,14 +53,14 @@ jobs:
           file: build/app/outputs/apk/release/app-release.apk
           debug: true
 
-      - run: flutter channel beta
-      - run: flutter upgrade
-      - run: flutter config --enable-web
-      - name: Build Web App
-        run: |
-          flutter build web
-          cd build/web
-          zip -r web-app.zip .      
+#       - run: flutter channel beta
+#       - run: flutter upgrade
+#       - run: flutter config --enable-web
+#       - name: Build Web App
+#         run: |
+#           flutter build web
+#           cd build/web
+#           zip -r web-app.zip .      
 
 
 
