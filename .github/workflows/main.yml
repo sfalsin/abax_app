@@ -21,7 +21,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.5.3'
+          flutter-version: '3.0.4' #'2.5.3'
       - name: Fix dart
         run: dart fix –apply
       #- run: pwd
