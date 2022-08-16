@@ -1,0 +1,56 @@
+on:
+  push:
+    branches:
+      - master
+
+name: Build and Release Apps
+jobs:
+  build:
+    name: Build Apps
+    runs-on: macos-latest #
+    steps:
+      - name: Export Release Timestamp
+        run: echo "APP_VERSION=v$(date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '12.x'
+          distribution: 'adopt'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.4' #'2.5.3'
+      - name: Fix dart
+        run: dart fix –apply
+      #- run: pwd
+      #- run: ls -lptra
+      #- run: flutter doctor
+      - name: Install pub Dependencies
+        run: flutter pub get
+      #- name: Run Tests
+        #run: flutter test
+
+  
+
+
+
+      - name: Build iOS App
+        run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
+
+
+      - name: Release Apps
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.APP_VERSION }}
+          name: ${{ env.APP_VERSION }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: 'build/ios/iphoneos/app.ipa'
