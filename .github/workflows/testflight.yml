@@ -18,6 +18,8 @@ jobs:
         run: chmod 775 ./.github/secrets/decrypt_secrets.sh
       - name: permissions2
         run: chmod 775 ./.github/scripts/*.sh
+      - name: CWD
+        run: cd ios
       - name: Setup provisioning profile
         env:
           IOS_KEYS: ${{ secrets.IOS_KEYS }}
