@@ -18,11 +18,36 @@ jobs:
         run: chmod 775 ./.github/secrets/decrypt_secrets.sh
       - name: permissions2
         run: chmod 775 ./.github/scripts/*.sh
-      - name: CWD
+        
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '12.x'
+          distribution: 'adopt'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.4' #'2.5.3'
+      - name: Fix dart
+        run: dart fix –apply
+      - name: Install pub Dependencies
+        run: flutter pub get
+
+      - name: Build iOS App
         run: |
-          cd ios
-          pod install --repo-update
-        shell: bash 
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload        
+        
+#       - name: CWD
+#         run: |
+#           cd ios
+#           pod install --repo-update
+#         shell: bash 
 #       - name: PodInstall
 #         run: pod install
       - name: Setup provisioning profile
@@ -36,7 +61,7 @@ jobs:
       - name: Archiving 2
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
       - name: Build xArchive
-        run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release DEVELOPMENT_TEAM=4U4QX6JL2P -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE=1CD94FEA-8320-5B0D-BE6B-FD57B2DB8210 clean archive CODE_SIGN_IDENTITY="Deivid Bitti"
+        run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release DEVELOPMENT_TEAM=GB59PDV8XS -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE=1CD94FEA-8320-5B0D-BE6B-FD57B2DB8210 clean archive CODE_SIGN_IDENTITY="club.abax.app"
 #       - name: Exporting .ipa
 #         run: ./.github/scripts/export_ipa.sh
       - name: Publishing app
