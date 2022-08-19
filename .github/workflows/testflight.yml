@@ -29,7 +29,7 @@ jobs:
           PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         run: ./.github/scripts/archive_app.sh
       - name: Archiving 2
-        run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -sdk iphoneos -configuration AppStoreDistribution -archivePath $PWD/build/Calculator.xcarchive clean archive | xcpretty
+        run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -sdk iphoneos -allowProvisioningUpdates -configuration AppStoreDistribution -archivePath $PWD/build/Calculator.xcarchive clean archive | xcpretty
       - name: Build xArchive
         run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release DEVELOPMENT_TEAM=GB59PDV8XS -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE=1CD94FEA-8320-5B0D-BE6B-FD57B2DB8210 clean archive CODE_SIGN_IDENTITY="App Abax"          
 #       - name: Exporting .ipa
