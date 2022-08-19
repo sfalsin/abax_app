@@ -19,7 +19,10 @@ jobs:
       - name: permissions2
         run: chmod 775 ./.github/scripts/*.sh
       - name: CWD
-        run: cd ios & pod install
+        run: |
+          cd ios
+          pod install --repo-update
+        shell: bash 
 #       - name: PodInstall
 #         run: pod install
       - name: Setup provisioning profile
