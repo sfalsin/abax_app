@@ -20,6 +20,8 @@ jobs:
         run: chmod 775 ./.github/scripts/*.sh
       - name: CWD
         run: cd ios
+      - name: PodInstall
+        run: pod install
       - name: Setup provisioning profile
         env:
           IOS_KEYS: ${{ secrets.IOS_KEYS }}
