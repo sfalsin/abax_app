@@ -44,6 +44,8 @@ class _ResultProdPageState extends State<ResultProdPage> {
         _user = await _userService.getCurrentUser();
 
         final credentials = await _userService.getCredentials();
+        final accessToken = await _userService.getUserSession();
+
         if (credentials != null &&
             credentials.accessKeyId != null &&
             credentials.secretAccessKey != null) {
@@ -58,7 +60,7 @@ class _ResultProdPageState extends State<ResultProdPage> {
           // get previous count
           _productService = ProductService(_awsSigV4Client);
           try {
-            _scanBarcode = await _productService.getProduct(widget.scanBarcode);
+            _scanBarcode = await _productService.getProduct(widget.scanBarcode,accessToken);
           } catch (e) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(e.toString())));
