@@ -15,8 +15,12 @@ security import ./.github/secrets/YOUR_CERTIFICATE.p12 -t agg -k ~/Library/Keych
 security list-keychains -s ~/Library/Keychains/build.keychain
 security default-keychain -s ~/Library/Keychains/build.keychain
 security unlock-keychain -p "hezq-ezxm-rdln-whyg" ~/Library/Keychains/build.keychain
+security set-keychain-settings
+security list-keychains
 
 security set-key-partition-list -S apple-tool:,apple: -s -k "hezq-ezxm-rdln-whyg" ~/Library/Keychains/build.keychain
+
+mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
 
 for PROVISION in `ls ./.github/secrets/*.mobileprovision`
 do
