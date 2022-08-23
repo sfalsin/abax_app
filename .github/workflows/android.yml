@@ -1,0 +1,63 @@
+on:
+  push:
+    branches:
+      - master
+
+name: Build and Release Apps - Android
+jobs:
+  build:
+    name: Build Apps
+    runs-on: ubuntu-latest #macos-latest #
+    steps:
+      - name: Export Release Timestamp
+        run: echo "APP_VERSION=v$(date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '12.x'
+          distribution: 'adopt'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.4' #'2.5.3'
+      - name: Fix dart
+        run: dart fix –apply
+      #- run: pwd
+      #- run: ls -lptra
+      #- run: flutter doctor
+      - name: Install pub Dependencies
+        run: flutter pub get
+      #- name: Run Tests
+        #run: flutter test
+
+      - name: Build Android App
+        run: flutter build apk
+
+#       - run: ls -lptra   
+#       - run: ls -lptra build/app/outputs/apk
+#         uses: actions/upload-artifact@master
+#         with:
+#           name: apk-release
+#           path: build/app/outputs/bundle/release/app-release.apk
+
+      - name: work around permission issue
+        run: git config --global --add safe.directory /github/workspace
+      - name: Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.3.3
+        with:
+          appId: ${{secrets.FIREBASE_ANDROID_APPID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: betatesters
+          file: build/app/outputs/apk/release/app-release.apk
+          debug: true
+
+
+      - name: Release Apps
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.APP_VERSION }}
+          name: ${{ env.APP_VERSION }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: 'build/app/outputs/apk/release/*.apk'
