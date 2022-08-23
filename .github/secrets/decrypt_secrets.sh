@@ -17,3 +17,9 @@ security default-keychain -s ~/Library/Keychains/build.keychain
 security unlock-keychain -p "hezq-ezxm-rdln-whyg" ~/Library/Keychains/build.keychain
 
 security set-key-partition-list -S apple-tool:,apple: -s -k "hezq-ezxm-rdln-whyg" ~/Library/Keychains/build.keychain
+
+for PROVISION in `ls ./.github/secrets/*.mobileprovision`
+do
+  UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
+  cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+done
