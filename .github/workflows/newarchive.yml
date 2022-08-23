@@ -61,7 +61,7 @@ jobs:
       - name: Archive
         run: xcodebuild archive -workspace ios/Runner.xcworkspace -scheme Runner -configuration Automation -archivePath .ios/Runner.xcarchive "OTHER_CODE_SIGN_FLAGS=--keychain 'build.keychain'" -resolvePackageDependencies
       - name: Export Archive
-        run: xcodebuild -exportArchive -archivePath .ios/Runner.xcarchive -exportOptionsPlist .ios/ExportOptions.plist -exportPath ./artifacts/
+        run: xcodebuild -exportArchive -archivePath .ios/Runner.xcarchive -exportOptionsPlist ios/ExportOptions.plist -exportPath ./artifacts/
       - name: Upload artifacts
         uses: actions/upload-artifact@v1.0.0
         with:
