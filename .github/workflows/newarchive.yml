@@ -1,0 +1,72 @@
+on:
+  push:
+    branches:
+      - master
+
+
+name: TestFlight IOS      
+jobs:
+  deploy:
+    name: Deploying to Testflight
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: Install gpg
+        run: brew install gnupg
+      - name: permissions1
+        run: chmod 775 ./.github/secrets/decrypt_secrets.sh
+      - name: permissions2
+        run: chmod 775 ./.github/scripts/*.sh
+        
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '12.x'
+          distribution: 'adopt'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.4' #'2.5.3'
+      - name: Fix dart
+        run: dart fix –apply
+      - name: Install pub Dependencies
+        run: flutter pub get
+
+      - name: Build iOS App
+        run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload        
+        
+#       - name: CWD
+#         run: |
+#           cd ios
+#           pod install --repo-update
+#         shell: bash 
+#       - name: PodInstall
+#         run: pod install
+      - name: Setup provisioning profile
+        env:
+          IOS_KEYS: ${{ secrets.IOS_KEYS }}
+        run: ./.github/secrets/decrypt_secrets.sh
+      #- name: Archiving project
+      #  env:
+      #    PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        #run: ./.github/scripts/archive_app.sh
+      - name: Archive
+        run: xcodebuild archive -workspace ios/Runner.xcworkspace -scheme Runner -configuration Automation -archivePath .ios/Runner.xcarchive "OTHER_CODE_SIGN_FLAGS=--keychain 'build.keychain'" -resolvePackageDependencies
+      - name: Build xArchive
+        run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -allowProvisioningUpdates -authenticationKeyPath ${GITHUB_WORKSPACE}/ios/AuthKey_QNXK2ULKY5.p8 -authenticationKeyID "QNXK2ULKY5" -authenticationKeyIssuerID "2145b558-05e3-42e1-a1a6-5c6a5be1bc13" DEVELOPMENT_TEAM=GB59PDV8XS -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE="1CD94FEA-8320-5B0D-BE6B-FD57B2DB8210" clean archive CODE_SIGN_IDENTITY="Apple Development"
+#       - name: Exporting .ipa
+#         run: ./.github/scripts/export_ipa.sh
+      - name: Publishing app
+        if: success()
+        env:
+          APPLEID_USERNAME: ${{ secrets.APPLEID_USERNAME }}
+          APPLEID_PASSWORD: ${{ secrets.APPLEID_PASSWORD }}
+        run: ./.github/scripts/publish_testflight.sh
