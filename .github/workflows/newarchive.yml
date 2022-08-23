@@ -59,7 +59,7 @@ jobs:
       #    PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         #run: ./.github/scripts/archive_app.sh
       - name: Archive
-        run: xcodebuild archive -workspace ios/Runner.xcworkspace -scheme Runner -configuration Automation -archivePath ios/Runner.xcarchive "OTHER_CODE_SIGN_FLAGS=--keychain 'build.keychain'" -resolvePackageDependencies
+        run: xcodebuild archive -workspace ios/Runner.xcworkspace -scheme Runner -configuration Automation -archivePath ios/Runner.xcarchive "OTHER_CODE_SIGN_FLAGS=--keychain 'build.keychain'"
       - name: Export Archive
         run: xcodebuild -exportArchive -archivePath ios/Runner.xcarchive -exportOptionsPlist ios/ExportOptions.plist -exportPath ios/artifacts/
       - name: Upload artifacts
