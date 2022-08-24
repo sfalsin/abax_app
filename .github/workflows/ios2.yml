@@ -48,6 +48,7 @@ jobs:
       - name: Restore packages
         run: flutter pub get
 
+
       - name: Build Flutter
         run: flutter build ios --release --no-codesign
 
