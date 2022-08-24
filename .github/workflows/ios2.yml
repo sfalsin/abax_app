@@ -57,6 +57,7 @@ jobs:
           project-path: ios/Runner.xcodeproj
           p12-base64: ${{ secrets.P12_BASE64 }}
           mobileprovision-base64: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
+          certificate-password: ${{ secrets.P12_PASSWORD }}
           code-signing-identity: Apple Development
           team-id: GB59PDV8XS
           workspace-path: ios/Runner.xcworkspace
