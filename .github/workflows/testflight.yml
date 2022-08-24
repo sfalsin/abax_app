@@ -61,7 +61,7 @@ jobs:
       - name: Archiving 2
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
       - name: Build xArchive
-        run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -allowProvisioningUpdates -authenticationKeyPath ${GITHUB_WORKSPACE}/ios/AuthKey_QNXK2ULKY5.p8 -authenticationKeyID "QNXK2ULKY5" -authenticationKeyIssuerID "2145b558-05e3-42e1-a1a6-5c6a5be1bc13" DEVELOPMENT_TEAM=GB59PDV8XS -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE="1CD94FEA-8320-5B0D-BE6B-FD57B2DB8210" clean archive CODE_SIGN_IDENTITY="Apple Development"
+        run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release -allowProvisioningUpdates -authenticationKeyPath ${GITHUB_WORKSPACE}/ios/AuthKey_QNXK2ULKY5.p8 -authenticationKeyID "QNXK2ULKY5" -authenticationKeyIssuerID "2145b558-05e3-42e1-a1a6-5c6a5be1bc13" DEVELOPMENT_TEAM=GB59PDV8XS -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE="1CD94FEA-8320-5B0D-BE6B-FD57B2DB8210" clean archive CODE_SIGN_IDENTITY="Apple Development"  "OTHER_CODE_SIGN_FLAGS=--keychain 'build.keychain'"
 #       - name: Exporting .ipa
 #         run: ./.github/scripts/export_ipa.sh
       - name: Publishing app
