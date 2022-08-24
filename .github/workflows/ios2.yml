@@ -38,10 +38,13 @@ jobs:
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Install and set Flutter version
-        uses: subosito/flutter-action@v1.4.0
+        uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.0.1'
-
+          flutter-version: '3.0.4' #'2.5.3'
+          
+      - name: Fix dart
+        run: dart fix –apply
+        
       - name: Restore packages
         run: flutter pub get
 
