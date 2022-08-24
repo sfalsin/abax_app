@@ -52,6 +52,15 @@ jobs:
       - name: Build Flutter
         run: flutter build ios --release --no-codesign
 
+      - uses: yukiarrr/ios-build-action@v1.5.0
+        with:
+          project-path: ios/Runner.xcodeproj
+          p12-base64: ${{ secrets.P12_BASE64 }}
+          mobileprovision-base64: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
+          code-signing-identity: Apple Development
+          team-id: GB59PDV8XS
+          workspace-path: ios/Runner.xcworkspace
+
       - name: Build resolve Swift dependencies
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme ${{ env.SHEME }} -configuration ${{ env.BUILD_CONFIGURATION }}
 
