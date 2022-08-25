@@ -52,18 +52,42 @@ jobs:
       - name: Build Flutter
         run: flutter build ios --release --no-codesign
 
-      - name: Build resolve Swift dependencies
-        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme ${{ env.SHEME }} -configuration ${{ env.BUILD_CONFIGURATION }}
-
-      - name: Build xArchive
-        run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme ${{ env.SHEME }} -configuration ${{ env.BUILD_CONFIGURATION }} DEVELOPMENT_TEAM=GB59PDV8XS -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE=1CD94FEA-8320-5B0D-BE6B-FD57B2DB8210 clean archive CODE_SIGN_IDENTITY="Apple Development"
-
-      - name: Export ipa
-        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/ExportOptions.plist
-
-      - name: Publish iOS Artefacts
-        uses: actions/upload-artifact@v1
+      - uses: yukiarrr/ios-build-action@v1.5.0
         with:
-          name: release-ios
-          path: build-output/ios
+          project-path: ios/Runner.xcodeproj
+          p12-base64: ${{ secrets.P12_BASE64 }}
+          mobileprovision-base64: ${{ secrets.PROVISIONING_PROFILE_BASE64 }}
+          certificate-password: ${{ secrets.P12_PASSWORD }}
+          code-signing-identity: 'iPhone Distribution'
+          team-id: 'GB59PDV8XS'
+          workspace-path: ios/Runner.xcworkspace
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test IOS IPA
+          path: 'output.ipa'
+
+      - name: 'Upload app to TestFlight'
+        uses: apple-actions/upload-testflight-build@v1
+        with:
+          app-path: 'output.ipa'
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+
+#       - name: Build resolve Swift dependencies
+#         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme ${{ env.SHEME }} -configuration ${{ env.BUILD_CONFIGURATION }}
+
+#       - name: Build xArchive
+#         run: |
+#           xcodebuild -workspace ios/Runner.xcworkspace -scheme ${{ env.SHEME }} -configuration ${{ env.BUILD_CONFIGURATION }} DEVELOPMENT_TEAM=GB59PDV8XS -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE=1CD94FEA-8320-5B0D-BE6B-FD57B2DB8210 clean archive CODE_SIGN_IDENTITY="Apple Development"
+
+#       - name: Export ipa
+#         run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/ExportOptions.plist
+
+#       - name: Publish iOS Artefacts
+#         uses: actions/upload-artifact@v1
+#         with:
+#           name: release-ios
+#           path: build-output/ios
