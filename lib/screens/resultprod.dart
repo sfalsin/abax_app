@@ -20,19 +20,55 @@ class ResultProdPage extends StatefulWidget {
   @override
   _ResultProdPageState createState() => new _ResultProdPageState();
 }
+abstract class ListItem {
+  /// The title line to show in a list item.
+  Widget buildTitle(BuildContext context);
+
+  /// The subtitle line, if any, to show in a list item.
+  Widget buildSubtitle(BuildContext context);
+}
+
+class HeadingItem implements ListItem {
+  final String heading;
+
+  HeadingItem(this.heading);
+
+  @override
+  Widget buildTitle(BuildContext context) {
+    return Text(
+      heading,
+      style: Theme.of(context).textTheme.headline5,
+    );
+  }
+
+  @override
+  Widget buildSubtitle(BuildContext context) => const SizedBox.shrink();
+}
+class MessageItem implements ListItem {
+  final dynamic sender;
+
+  MessageItem(this.sender);
+
+  @override
+  Widget buildTitle(BuildContext context) => Text(sender["data_emissao"]+" | "+sender["valor_comercial"].toString());
+
+  @override
+  Widget buildSubtitle(BuildContext context) => Text(sender["razao_social"]+","+sender["bairro"]+","+sender["cidade"]+","+sender["uf"]);
+}
 
 class _ResultProdPageState extends State<ResultProdPage> {
   final _userService = UserService(userPool);
   late ProductService _productService;
   late AwsSigV4Client _awsSigV4Client;
+  late List<ListItem> items;
   User? _user = User();
   bool _isAuthenticated = false;
   var _scanBarcode;
   late Future<bool> callData;
   @override
   void initState() {
-    var initState = super.initState();
     callData = _getValues();
+    var initState = super.initState();
   }
 
   Future<bool> _getValues() async {
@@ -61,6 +97,16 @@ class _ResultProdPageState extends State<ResultProdPage> {
           _productService = ProductService(_awsSigV4Client);
           try {
             _scanBarcode = await _productService.getProduct(widget.scanBarcode,accessToken);
+            var pricesSize = _scanBarcode["prices"].length;
+            pricesSize = pricesSize+1;
+            items = List<ListItem>.generate(
+              pricesSize,
+                  (i) => i == 0
+                  ? HeadingItem(_scanBarcode["name"])
+                  : MessageItem(_scanBarcode["prices"][i-1]),
+            );
+
+
           } catch (e) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(e.toString())));
@@ -82,39 +128,77 @@ class _ResultProdPageState extends State<ResultProdPage> {
                 backgroundColor: Colors.purple,
                 systemOverlayStyle: SystemUiOverlayStyle(
                     statusBarColor: Colors.purple,
-                    systemNavigationBarColor: Colors.purple)),
+                    systemNavigationBarColor: Colors.purple),
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.pop(context),
+                )),
             drawer: Drawer(),
             body: FutureBuilder<bool>(
                 future: callData,
                 builder: (context, snapshot) {
                   List<Widget> children;
                   if (snapshot.hasData) {
-                    children = <Widget>[
-                      Container(child: JsonViewer(_scanBarcode)),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          // Navigator.of(
-                          //   context,
-                          //   rootNavigator: true,
-                          // ).pop(
-                          //   context,
-                          // );
-                          //Navigator.of(context).maybePop();//Navigator.pop<void>(context);
-                        },
-                        child: const Text('Voltar!'),
-                      ),
-                    ];
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: children,
-                      ),
+                    return ListView.builder(
+                      // Let the ListView know how many items it needs to build.
+                      itemCount: items.length,
+                      // Provide a builder function. This is where the magic happens.
+                      // Convert each item into a widget based on the type of item it is.
+                      itemBuilder: (context, index) {
+                        final item = items[index];
+
+                        return ListTile(
+                          title: item.buildTitle(context),
+                          subtitle: item.buildSubtitle(context),
+                        );
+                      },
                     );
+                    // children = <Widget>[
+                    //   //Container(child: JsonViewer(_scanBarcode)),
+                    //   Container(child: ListView.builder(
+                    //     // Let the ListView know how many items it needs to build.
+                    //     itemCount: items.length,
+                    //     // Provide a builder function. This is where the magic happens.
+                    //     // Convert each item into a widget based on the type of item it is.
+                    //     itemBuilder: (context, index) {
+                    //       final item = items[index];
+                    //
+                    //       return ListTile(
+                    //         title: item.buildTitle(context),
+                    //         subtitle: item.buildSubtitle(context),
+                    //       );
+                    //     },
+                    //   )),
+                    //   ElevatedButton(
+                    //     onPressed: () {
+                    //       Navigator.pop(context);
+                    //       // Navigator.of(
+                    //       //   context,
+                    //       //   rootNavigator: true,
+                    //       // ).pop(
+                    //       //   context,
+                    //       // );
+                    //       //Navigator.of(context).maybePop();//Navigator.pop<void>(context);
+                    //     },
+                    //     child: const Text('Voltar!'),
+                    //   ),
+                    // ];
+                    // return Center(
+                    //   child: Column(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: children,
+                    //   ),
+                    // );
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
-                  return CircularProgressIndicator();
+                  return SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
                 }));
   }
 }

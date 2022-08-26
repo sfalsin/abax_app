@@ -95,7 +95,11 @@ class _ResultCouponPageState extends State<ResultCouponPage> {
                 backgroundColor: Colors.purple,
                 systemOverlayStyle: SystemUiOverlayStyle(
                     statusBarColor: Colors.purple,
-                    systemNavigationBarColor: Colors.purple)),
+                    systemNavigationBarColor: Colors.purple),
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.pop(context),
+                )),
             drawer: Drawer(),
             body: FutureBuilder<bool>(
                 future: callData,
@@ -127,7 +131,13 @@ class _ResultCouponPageState extends State<ResultCouponPage> {
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
-                  return CircularProgressIndicator();
+                  return SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
                 }));
   }
 }
