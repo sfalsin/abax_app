@@ -92,10 +92,10 @@ class _ResultCouponPageState extends State<ResultCouponPage> {
     return Scaffold(
             appBar: AppBar(
                 title: const Text('ABAX Leitura de Cupom'),
-                backgroundColor: Colors.purple,
+                backgroundColor: const Color(0xff764abc),
                 systemOverlayStyle: SystemUiOverlayStyle(
-                    statusBarColor: Colors.purple,
-                    systemNavigationBarColor: Colors.purple),
+                    statusBarColor: const Color(0xff764abc),
+                    systemNavigationBarColor: const Color(0xff764abc)),
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () => Navigator.pop(context),
@@ -131,11 +131,15 @@ class _ResultCouponPageState extends State<ResultCouponPage> {
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
-                  return SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Center(
-                      child: CircularProgressIndicator(),
+                  return Center(
+                    heightFactor: 1,
+                    widthFactor: 1,
+                    child: SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.5,
+                      ),
                     ),
                   );
                 }));

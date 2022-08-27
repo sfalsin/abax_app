@@ -29,12 +29,16 @@ class _SecureScreenState extends State<SecureScreen> {
   //late CounterService _counterService;
   late AwsSigV4Client _awsSigV4Client;
   User? _user = User();
+  String? userName;
+  String? userMail;
   //Counter _counter = Counter(0);
   bool _isAuthenticated = false;
   @override
   void initState() {
     _tooltipBehavior = TooltipBehavior(enable: true);
     super.initState();
+    _getValues(context);
+
   }
 
 
@@ -45,7 +49,8 @@ class _SecureScreenState extends State<SecureScreen> {
       if (_isAuthenticated) {
         // get user attributes from cognito
         _user = await _userService.getCurrentUser();
-
+        userName = _user?.name;
+        userMail = _user?.email;
         // get session credentials
         final credentials = await _userService.getCredentials();
         if (credentials != null && credentials.accessKeyId != null && credentials.secretAccessKey != null) {
@@ -106,7 +111,8 @@ class _SecureScreenState extends State<SecureScreen> {
 
     setState(() {
       //_scanBarcode = json.decode(barcodeScanRes);
-      if (barcodeScanRes != null && barcodeScanRes != "") {
+      print(barcodeScanRes);
+      if (barcodeScanRes != null && barcodeScanRes != "" && barcodeScanRes != "-1") {
         Navigator.push<void>(
           context,
           // MaterialPageRoute<void>(builder: (context) => ResultPage(_scanBarcode)),
@@ -140,7 +146,7 @@ class _SecureScreenState extends State<SecureScreen> {
 
     setState(() {
       // _scanBarcode = json.decode(barcodeScanRes);
-      if (barcodeScanRes != null && barcodeScanRes != "") {
+      if (barcodeScanRes != null && barcodeScanRes != "" && barcodeScanRes != "-1") {
         Navigator.push<void>(
           context,
           // MaterialPageRoute<void>(builder: (context) => ResultPage(_scanBarcode)),
@@ -154,12 +160,48 @@ class _SecureScreenState extends State<SecureScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            appBar: AppBar(title: const Text('ABAX'),backgroundColor: Colors.purple,systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.purple,systemNavigationBarColor: Colors.purple
+            appBar: AppBar(title: const Text('ABAX'),backgroundColor: const Color(0xff764abc),systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: const Color(0xff764abc),systemNavigationBarColor: const Color(0xff764abc)
             )),
-            drawer: Drawer(),
+            drawer: Drawer(child: ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
+              children: [
+                const UserAccountsDrawerHeader( // <-- SEE HERE
+                  decoration: BoxDecoration(color: const Color(0xff764abc)),
+                  accountName: Text(
+                    "Marcio Sfalsin",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  accountEmail: const Text(
+                    "marciosfalsin@gmail.com",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  currentAccountPicture: FlutterLogo(),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.home,
+                  ),
+                  title: const Text('Registrar Cupom Fiscal'),
+                  onTap:  () => scanQR(context),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.train,
+                  ),
+                  title: const Text('Consultar produto'),
+                  onTap: () => scanBarcodeNormal(context),
+                ),
+              ],
+            )),
             body: Builder(builder: (BuildContext context) {
               return Container(
                   alignment: Alignment.center,
@@ -194,7 +236,7 @@ class _SecureScreenState extends State<SecureScreen> {
                             ]),
                         SizedBox(height: 20),
                         SizedIconButton(
-                          color: Colors.purple,
+                          color: const Color(0xff764abc),
                           icon: Icon(
                             Icons.qr_code_2,
                             color: Colors.white,
@@ -204,7 +246,7 @@ class _SecureScreenState extends State<SecureScreen> {
                         ),
                         SizedBox(height: 20),
                         SizedIconButton(
-                          color: Colors.purple,
+                          color: const Color(0xff764abc),
                           icon: Icon(
                             CupertinoIcons.barcode,
                             color: Colors.white,

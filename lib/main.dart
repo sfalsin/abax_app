@@ -83,9 +83,10 @@ class _MyAppState extends State<MyApp> {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cognito on Flutter',
+      debugShowCheckedModeBanner: false,
+      title: 'ABAX',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.purple,
       ),
       home: LoginScreen(),
     );

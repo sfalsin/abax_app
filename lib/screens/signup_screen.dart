@@ -68,7 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(title: const Text('ABAX - Cadastro'),backgroundColor: Colors.purple,systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.purple,systemNavigationBarColor: Colors.purple
+      appBar: AppBar(title: const Text('ABAX - Cadastro'),backgroundColor: const Color(0xff764abc),systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: const Color(0xff764abc),systemNavigationBarColor: const Color(0xff764abc)
       )),
       body: Builder(
         builder: (BuildContext context) {
@@ -109,6 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       top: 10.0,
                     ),
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: const Color(0xff764abc)),
                       onPressed: () {
                         submit(context);
                       },

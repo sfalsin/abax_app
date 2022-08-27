@@ -1,5 +1,6 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner_example/screens/login_screen.dart';
 import 'package:flutter_barcode_scanner_example/secrets.dart';
 import 'package:flutter_barcode_scanner_example/models/user.dart';
@@ -101,9 +102,8 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Confirm Account'),
-      ),
+      appBar: AppBar(title: const Text('ABAX - Cadastro'),backgroundColor: const Color(0xff764abc),systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: const Color(0xff764abc),systemNavigationBarColor: const Color(0xff764abc)
+      )),
       body: Builder(
           builder: (BuildContext context) => Container(
             child: Form(
@@ -133,6 +133,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                       top: 10.0,
                     ),
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: const Color(0xff764abc)),
                       onPressed: () {
                         _submit(context);
                       },
@@ -149,7 +150,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                       },
                       child: Text(
                         'Resend Confirmation Code',
-                        style: TextStyle(color: Colors.blueAccent),
+                        style: TextStyle(color: const Color(0xff764abc)),
                       ),
                     ),
                   ),

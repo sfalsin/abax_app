@@ -134,6 +134,8 @@ class UserService {
     CognitoUserPoolData data;
     final userAttributes = [
       AttributeArg(name: 'name', value: name),
+      //AttributeArg(name: 'email_verified', value:	'true'),
+      AttributeArg(name: 'email', value:	email)
     ];
     data = await _userPool.signUp(email, password, userAttributes: userAttributes);
 

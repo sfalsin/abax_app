@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
             }
             final screenSize = MediaQuery.of(context).size;
             return Scaffold(
-              appBar: AppBar(title: const Text('ABAX Login'),backgroundColor: Colors.purple,systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.purple,systemNavigationBarColor: Colors.purple
+              appBar: AppBar(title: const Text('ABAX Login'),backgroundColor: const Color(0xff764abc),systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: const Color(0xff764abc),systemNavigationBarColor: const Color(0xff764abc)
               )),
               body: Builder(
                 builder: (BuildContext context) {
@@ -160,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             child: ElevatedButton(
                               onPressed: () => submit(context),
-                              style: ElevatedButton.styleFrom(primary: Colors.purple),
+                              style: ElevatedButton.styleFrom(primary: const Color(0xff764abc)),
                               child: Text(
                                 'Login',
                                 style: TextStyle(color: Colors.white),
@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
                             width: screenSize.width,
                             child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(primary: Colors.purple),
+                              style: ElevatedButton.styleFrom(primary: const Color(0xff764abc)),
                               onPressed: () {
                                 Navigator.push(
                                   context,
