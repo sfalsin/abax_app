@@ -6,9 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner_example/main.dart';
 import 'package:flutter_barcode_scanner_example/screens/login_screen.dart';
 import 'package:flutter_barcode_scanner_example/screens/resultcoupon.dart';
+import 'package:flutter_barcode_scanner_example/screens/resultmycoupons.dart';
 import 'package:flutter_barcode_scanner_example/screens/resultprod.dart';
 import 'package:flutter_barcode_scanner_example/secrets.dart';
 import 'package:flutter_barcode_scanner_example/models/user.dart';
+import 'package:flutter_barcode_scanner_example/services/coupon_service.dart';
 import 'package:flutter_barcode_scanner_example/services/user_service.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -26,6 +28,9 @@ class SecureScreen extends StatefulWidget {
 class _SecureScreenState extends State<SecureScreen> {
   late TooltipBehavior _tooltipBehavior;
   final _userService = UserService(userPool);
+  late CouponService _couponService;
+  late List<SalesData> items;
+  var _myCoupons;
   //late CounterService _counterService;
   late AwsSigV4Client _awsSigV4Client;
   User? _user = User();
@@ -36,11 +41,9 @@ class _SecureScreenState extends State<SecureScreen> {
   @override
   void initState() {
     _tooltipBehavior = TooltipBehavior(enable: true);
-    super.initState();
     _getValues(context);
-
+    super.initState();
   }
-
 
   Future<UserService> _getValues(BuildContext context) async {
     try {
@@ -53,7 +56,11 @@ class _SecureScreenState extends State<SecureScreen> {
         userMail = _user?.email;
         // get session credentials
         final credentials = await _userService.getCredentials();
-        if (credentials != null && credentials.accessKeyId != null && credentials.secretAccessKey != null) {
+        final accessToken = await _userService.getUserSession();
+
+        if (credentials != null &&
+            credentials.accessKeyId != null &&
+            credentials.secretAccessKey != null) {
           _awsSigV4Client = AwsSigV4Client(
             credentials.accessKeyId!,
             credentials.secretAccessKey!,
@@ -61,6 +68,20 @@ class _SecureScreenState extends State<SecureScreen> {
             region: awsRegion,
             sessionToken: credentials.sessionToken,
           );
+
+          _couponService = CouponService(_awsSigV4Client);
+
+          try {
+            _myCoupons = await _couponService.getMyCoupons(accessToken);
+            var pricesSize = _myCoupons.length;
+
+            //pricesSize = pricesSize + 1;
+            items = List<SalesData>.generate(
+                pricesSize, (i) => SalesData(_myCoupons[i]["data_emissao"],_myCoupons[i]["valor_total"]));
+          } catch (e) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(e.toString())));
+          }
 
           // // get previous count
           // _counterService = CounterService(_awsSigV4Client);
@@ -83,7 +104,7 @@ class _SecureScreenState extends State<SecureScreen> {
 
   Future<void> startBarcodeScanStream() async {
     FlutterBarcodeScanner.getBarcodeStreamReceiver(
-        '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
+            '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
         .listen((barcode) => print(barcode));
   }
 
@@ -112,7 +133,9 @@ class _SecureScreenState extends State<SecureScreen> {
     setState(() {
       //_scanBarcode = json.decode(barcodeScanRes);
       print(barcodeScanRes);
-      if (barcodeScanRes != null && barcodeScanRes != "" && barcodeScanRes != "-1") {
+      if (barcodeScanRes != null &&
+          barcodeScanRes != "" &&
+          barcodeScanRes != "-1") {
         Navigator.push<void>(
           context,
           // MaterialPageRoute<void>(builder: (context) => ResultPage(_scanBarcode)),
@@ -146,7 +169,9 @@ class _SecureScreenState extends State<SecureScreen> {
 
     setState(() {
       // _scanBarcode = json.decode(barcodeScanRes);
-      if (barcodeScanRes != null && barcodeScanRes != "" && barcodeScanRes != "-1") {
+      if (barcodeScanRes != null &&
+          barcodeScanRes != "" &&
+          barcodeScanRes != "-1") {
         Navigator.push<void>(
           context,
           // MaterialPageRoute<void>(builder: (context) => ResultPage(_scanBarcode)),
@@ -158,40 +183,54 @@ class _SecureScreenState extends State<SecureScreen> {
     });
   }
 
+  Future<void> myCoupons(context) async {
+    setState(() {
+      Navigator.push<void>(
+        context,
+        MaterialPageRoute<void>(builder: (context) => ResultMyCouponsPage()),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            appBar: AppBar(title: const Text('ABAX'),backgroundColor: const Color(0xff764abc),systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: const Color(0xff764abc),systemNavigationBarColor: const Color(0xff764abc)
-            )),
-            drawer: Drawer(child: ListView(
+            appBar: AppBar(
+                title: const Text('ABAX'),
+                backgroundColor: const Color(0xff764abc),
+                systemOverlayStyle: SystemUiOverlayStyle(
+                    statusBarColor: const Color(0xff764abc),
+                    systemNavigationBarColor: const Color(0xff764abc))),
+            drawer: Drawer(
+                child: ListView(
               // Important: Remove any padding from the ListView.
               padding: EdgeInsets.zero,
               children: [
-                const UserAccountsDrawerHeader( // <-- SEE HERE
+                const UserAccountsDrawerHeader(
+                  // <-- SEE HERE
                   decoration: BoxDecoration(color: const Color(0xff764abc)),
                   accountName: Text(
-                    "Marcio Sfalsin",
+                    "ABAX Clube de compradores inteligentes",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   accountEmail: const Text(
-                    "marciosfalsin@gmail.com",
+                    "suporte@abax.club",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  currentAccountPicture: FlutterLogo(),
+                  currentAccountPicture: Image(image: AssetImage('assets/icons/icon.png')),//FlutterLogo(),
                 ),
                 ListTile(
                   leading: Icon(
                     Icons.home,
                   ),
                   title: const Text('Registrar Cupom Fiscal'),
-                  onTap:  () => scanQR(context),
+                  onTap: () => scanQR(context),
                 ),
                 ListTile(
                   leading: Icon(
@@ -199,6 +238,13 @@ class _SecureScreenState extends State<SecureScreen> {
                   ),
                   title: const Text('Consultar produto'),
                   onTap: () => scanBarcodeNormal(context),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.train,
+                  ),
+                  title: const Text('Consultar cupons importados'),
+                  onTap: () => myCoupons(context),
                 ),
               ],
             )),
@@ -219,6 +265,7 @@ class _SecureScreenState extends State<SecureScreen> {
                             tooltipBehavior: _tooltipBehavior,
                             series: <LineSeries<SalesData, String>>[
                               LineSeries<SalesData, String>(
+                                  // dataSource: items,
                                   dataSource: <SalesData>[
                                     SalesData('Jan', 35),
                                     SalesData('Feb', 28),
@@ -227,12 +274,12 @@ class _SecureScreenState extends State<SecureScreen> {
                                     SalesData('May', 40)
                                   ],
                                   xValueMapper: (SalesData sales, _) =>
-                                  sales.year,
+                                      sales.year,
                                   yValueMapper: (SalesData sales, _) =>
-                                  sales.sales,
+                                      sales.sales,
                                   // Enable data label
                                   dataLabelSettings:
-                                  DataLabelSettings(isVisible: true))
+                                      DataLabelSettings(isVisible: true))
                             ]),
                         SizedBox(height: 20),
                         SizedIconButton(
