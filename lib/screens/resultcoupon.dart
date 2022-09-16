@@ -107,7 +107,7 @@ class _ResultCouponPageState extends State<ResultCouponPage> {
                   List<Widget> children;
                   if (snapshot.hasData) {
                     children = <Widget>[
-                      Container(child: JsonViewer(_scanBarcode)),
+                      Container(child: Text(_scanBarcode["message"])),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
