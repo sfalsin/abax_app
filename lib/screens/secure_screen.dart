@@ -7,6 +7,7 @@ import 'package:flutter_barcode_scanner_example/main.dart';
 import 'package:flutter_barcode_scanner_example/screens/login_screen.dart';
 import 'package:flutter_barcode_scanner_example/screens/resultcoupon.dart';
 import 'package:flutter_barcode_scanner_example/screens/resultmycoupons.dart';
+import 'package:flutter_barcode_scanner_example/screens/resultmyproducts.dart';
 import 'package:flutter_barcode_scanner_example/screens/resultprod.dart';
 import 'package:flutter_barcode_scanner_example/secrets.dart';
 import 'package:flutter_barcode_scanner_example/models/user.dart';
@@ -195,6 +196,14 @@ class _SecureScreenState extends State<SecureScreen> {
     });
   }
 
+  Future<void> myProducts(context) async {
+    setState(() {
+      Navigator.push<void>(
+        context,
+        MaterialPageRoute<void>(builder: (context) => ResultMyProductsPage()),
+      );
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -248,7 +257,14 @@ class _SecureScreenState extends State<SecureScreen> {
                   leading: Icon(
                     Icons.train,
                   ),
-                  title: const Text('Consultar cupons importados'),
+                  title: const Text('Todos cupoms importados'),
+                  onTap: () => myCoupons(context),
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.train,
+                  ),
+                  title: const Text('Produtos mais comprados'),
                   onTap: () => myCoupons(context),
                 ),
               ],
