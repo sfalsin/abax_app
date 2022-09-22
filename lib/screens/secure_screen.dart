@@ -265,7 +265,7 @@ class _SecureScreenState extends State<SecureScreen> {
                     Icons.train,
                   ),
                   title: const Text('Produtos mais comprados'),
-                  onTap: () => myCoupons(context),
+                  onTap: () => myProducts(context),
                 ),
               ],
             )),
