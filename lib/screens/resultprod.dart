@@ -193,13 +193,13 @@ class _ResultProdPageState extends State<ResultProdPage> {
                     return Text("${snapshot.error}");
                   }
                   return Center(
-                    heightFactor: 1,
-                    widthFactor: 1,
+                    heightFactor: 10,
+                    widthFactor: 10,
                     child: SizedBox(
-                      height: 16,
-                      width: 16,
+                      height: 64,
+                      width: 64,
                       child: CircularProgressIndicator(
-                        strokeWidth: 1.5,
+                        strokeWidth: 2.5,
                       ),
                     ),
                   );

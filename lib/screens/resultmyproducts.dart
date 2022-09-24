@@ -51,18 +51,25 @@ class MessageItem implements ListItem {
   MessageItem(this.sender);
 
   @override
-  Widget buildTitle(BuildContext context) =>
-      Text(sender["name"].substring(0, 32));
+  Widget buildTitle(BuildContext context) {
+    try{
+        return Text(sender["name"].substring(0,33));
+    } catch (e){
+      return Text(sender["name"]);
+    }
+  }
+  //=>
+  //    Text(sender["name"].substring(0,33));
 
   @override
   Widget buildSubtitle(BuildContext context) =>
-      Text(sender["total_expend"] +
-          " - " +
-          sender["average_price"] +
-          " - " +
-          sender["max_price"] +
-          " - " +
-          sender["min_price"]);
+      Text("Acumulado:"+sender["total_expend"].toString() +
+          " | Medio:" +
+          sender["average_price"].toString() +
+          " | Máx:" +
+          sender["max_price"].toString() +
+          " | Min:" +
+          sender["min_price"].toString());
 }
 
 class _ResultMyProductsPageState extends State<ResultMyProductsPage> {
@@ -128,7 +135,7 @@ class _ResultMyProductsPageState extends State<ResultMyProductsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('ABAX Cupons importados'),
+            title: const Text('ABAX Produtos mais comprados'),
             backgroundColor: const Color(0xff764abc),
             systemOverlayStyle: SystemUiOverlayStyle(
                 statusBarColor: const Color(0xff764abc),
@@ -197,13 +204,13 @@ class _ResultMyProductsPageState extends State<ResultMyProductsPage> {
                 return Text("${snapshot.error}");
               }
               return Center(
-                heightFactor: 1,
-                widthFactor: 1,
+                heightFactor: 10,
+                widthFactor: 10,
                 child: SizedBox(
-                  height: 16,
-                  width: 16,
+                  height: 64,
+                  width: 64,
                   child: CircularProgressIndicator(
-                    strokeWidth: 1.5,
+                    strokeWidth: 2.5,
                   ),
                 ),
               );
