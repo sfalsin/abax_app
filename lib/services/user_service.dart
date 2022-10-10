@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_barcode_scanner_example/models/user.dart';
+import 'package:flutter_barcode_scanner_example/storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 //import '../constants.dart';
@@ -17,10 +19,13 @@ class UserService {
 
   /// Initiate user session from local storage if present
   Future<bool> init() async {
-    // final prefs = await SharedPreferences.getInstance();
-    // final storage = Storage(prefs);
-    final storage = CognitoMemoryStorage();
+    final prefs = await SharedPreferences.getInstance();
+    final storage = Storage(prefs);
+
+
+    // final storage = CognitoMemoryStorage();
     _userPool.storage = storage;
+
 
     _cognitoUser = await _userPool.getCurrentUser();
     if (_cognitoUser == null) {
