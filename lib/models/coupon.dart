@@ -1,6 +1,6 @@
 
-import 'package:flutter_barcode_scanner_example/models/coupon_header.dart';
-import 'package:flutter_barcode_scanner_example/models/coupon_row.dart';
+import 'package:abax/models/coupon_header.dart';
+import 'package:abax/models/coupon_row.dart';
 
 class Coupon {
   late CouponHeader nf;//"139083",

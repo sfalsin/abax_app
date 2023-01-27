@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_barcode_scanner_example/models/user.dart';
-import 'package:flutter_barcode_scanner_example/storage.dart';
+import 'package:abax/models/user.dart';
+import 'package:abax/storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 

@@ -1,10 +1,10 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner_example/screens/login_screen.dart';
-import 'package:flutter_barcode_scanner_example/secrets.dart';
-import 'package:flutter_barcode_scanner_example/models/user.dart';
-import 'package:flutter_barcode_scanner_example/services/user_service.dart';
+import 'package:abax/screens/login_screen.dart';
+import 'package:abax/secrets.dart';
+import 'package:abax/models/user.dart';
+import 'package:abax/services/user_service.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   ConfirmationScreen({Key? key, this.email}) : super(key: key);

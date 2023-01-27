@@ -3,21 +3,21 @@ import 'package:amazon_cognito_identity_dart_2/sig_v4.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner_example/main.dart';
-import 'package:flutter_barcode_scanner_example/screens/login_screen.dart';
-import 'package:flutter_barcode_scanner_example/screens/resultcoupon.dart';
-import 'package:flutter_barcode_scanner_example/screens/resultmycoupons.dart';
-import 'package:flutter_barcode_scanner_example/screens/resultmyproducts.dart';
-import 'package:flutter_barcode_scanner_example/screens/resultprod.dart';
-import 'package:flutter_barcode_scanner_example/secrets.dart';
-import 'package:flutter_barcode_scanner_example/models/user.dart';
-import 'package:flutter_barcode_scanner_example/services/coupon_service.dart';
-import 'package:flutter_barcode_scanner_example/services/user_service.dart';
+import 'package:abax/main.dart';
+import 'package:abax/screens/login_screen.dart';
+import 'package:abax/screens/resultcoupon.dart';
+import 'package:abax/screens/resultmycoupons.dart';
+import 'package:abax/screens/resultmyproducts.dart';
+import 'package:abax/screens/resultprod.dart';
+import 'package:abax/secrets.dart';
+import 'package:abax/models/user.dart';
+import 'package:abax/services/coupon_service.dart';
+import 'package:abax/services/user_service.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-import 'package:sized_icon_button/sized_icon_button.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+// import 'package:sized_icon_button/sized_icon_button.dart';
+// import 'package:cupertino_icons/cupertino_icons.dart';
 
 class SecureScreen extends StatefulWidget {
   SecureScreen({Key? key}) : super(key: key);
@@ -27,10 +27,10 @@ class SecureScreen extends StatefulWidget {
 }
 
 class _SecureScreenState extends State<SecureScreen> {
-  late TooltipBehavior _tooltipBehavior;
+  //late TooltipBehavior _tooltipBehavior;
   final _userService = UserService(userPool);
   late CouponService _couponService;
-  late List<SalesData> items;
+  //late List<SalesData> items;
   var _myCoupons;
   //late CounterService _counterService;
   late AwsSigV4Client _awsSigV4Client;
@@ -42,7 +42,7 @@ class _SecureScreenState extends State<SecureScreen> {
   bool _isAuthenticated = false;
   @override
   void initState() {
-    _tooltipBehavior = TooltipBehavior(enable: true);
+    //_tooltipBehavior = TooltipBehavior(enable: true);
     callData = _getValues(context);
     super.initState();
   }
@@ -78,10 +78,10 @@ class _SecureScreenState extends State<SecureScreen> {
             var pricesSize = _myCoupons.length;
 
             //pricesSize = pricesSize + 1;
-            items = List<SalesData>.generate(
-                pricesSize,
-                (i) => SalesData(_myCoupons[i]["data_emissao"],
-                    _myCoupons[i]["valor_total"]/1.0));
+            // items = List<SalesData>.generate(
+            //     pricesSize,
+            //     (i) => SalesData(_myCoupons[i]["data_emissao"],
+            //         _myCoupons[i]["valor_total"]/1.0));
           } catch (e) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(e.toString())));
@@ -140,12 +140,12 @@ class _SecureScreenState extends State<SecureScreen> {
       if (barcodeScanRes != null &&
           barcodeScanRes != "" &&
           barcodeScanRes != "-1") {
-        Navigator.push<void>(
-          context,
-          // MaterialPageRoute<void>(builder: (context) => ResultPage(_scanBarcode)),
-          MaterialPageRoute<void>(
-              builder: (context) => ResultCouponPage(barcodeScanRes)),
-        );
+        // Navigator.push<void>(
+        //   context,
+        //   // MaterialPageRoute<void>(builder: (context) => ResultPage(_scanBarcode)),
+        //   MaterialPageRoute<void>(
+        //       builder: (context) => ResultCouponPage(barcodeScanRes)),
+        // );
       }
     });
   }
@@ -176,12 +176,12 @@ class _SecureScreenState extends State<SecureScreen> {
       if (barcodeScanRes != null &&
           barcodeScanRes != "" &&
           barcodeScanRes != "-1") {
-        Navigator.push<void>(
-          context,
-          // MaterialPageRoute<void>(builder: (context) => ResultPage(_scanBarcode)),
-          MaterialPageRoute<void>(
-              builder: (context) => ResultProdPage(barcodeScanRes)),
-        );
+        // Navigator.push<void>(
+        //   context,
+        //   // MaterialPageRoute<void>(builder: (context) => ResultPage(_scanBarcode)),
+        //   MaterialPageRoute<void>(
+        //       builder: (context) => ResultProdPage(barcodeScanRes)),
+        // );
       }
       //_scanBarcode = barcodeScanRes;
     });
@@ -189,19 +189,19 @@ class _SecureScreenState extends State<SecureScreen> {
 
   Future<void> myCoupons(context) async {
     setState(() {
-      Navigator.push<void>(
-        context,
-        MaterialPageRoute<void>(builder: (context) => ResultMyCouponsPage()),
-      );
+      // Navigator.push<void>(
+      //   context,
+      //   MaterialPageRoute<void>(builder: (context) => ResultMyCouponsPage()),
+      // );
     });
   }
 
   Future<void> myProducts(context) async {
     setState(() {
-      Navigator.push<void>(
-        context,
-        MaterialPageRoute<void>(builder: (context) => ResultMyProductsPage()),
-      );
+      // Navigator.push<void>(
+      //   context,
+      //   MaterialPageRoute<void>(builder: (context) => ResultMyProductsPage()),
+      // );
     });
   }
   @override
@@ -279,52 +279,52 @@ class _SecureScreenState extends State<SecureScreen> {
                             direction: Axis.vertical,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              SfCartesianChart(
-                                  primaryXAxis: CategoryAxis(),
-                                  // Chart title
-                                  title: ChartTitle(text: 'Ultimas atividades'),
-                                  // Enable legend
-                                  legend: Legend(isVisible: false),
-                                  // Enable tooltip
-                                  tooltipBehavior: _tooltipBehavior,
-                                  series: <LineSeries<SalesData, String>>[
-                                    LineSeries<SalesData, String>(
-                                        dataSource: items,
-                                        // dataSource: <SalesData>[
-                                        //   SalesData('Jan', 35),
-                                        //   SalesData('Feb', 28),
-                                        //   SalesData('Mar', 34),
-                                        //   SalesData('Apr', 32),
-                                        //   SalesData('May', 40)
-                                        //],
-                                        xValueMapper: (SalesData sales, _) =>
-                                            sales.year,
-                                        yValueMapper: (SalesData sales, _) =>
-                                            sales.sales,
-                                        // Enable data label
-                                        dataLabelSettings:
-                                            DataLabelSettings(isVisible: true))
-                                  ]),
+                              // SfCartesianChart(
+                              //     primaryXAxis: CategoryAxis(),
+                              //     // Chart title
+                              //     title: ChartTitle(text: 'Ultimas atividades'),
+                              //     // Enable legend
+                              //     legend: Legend(isVisible: false),
+                              //     // Enable tooltip
+                              //     tooltipBehavior: _tooltipBehavior,
+                              //     series: <LineSeries<SalesData, String>>[
+                              //       LineSeries<SalesData, String>(
+                              //           dataSource: items,
+                              //           // dataSource: <SalesData>[
+                              //           //   SalesData('Jan', 35),
+                              //           //   SalesData('Feb', 28),
+                              //           //   SalesData('Mar', 34),
+                              //           //   SalesData('Apr', 32),
+                              //           //   SalesData('May', 40)
+                              //           //],
+                              //           xValueMapper: (SalesData sales, _) =>
+                              //               sales.year,
+                              //           yValueMapper: (SalesData sales, _) =>
+                              //               sales.sales,
+                              //           // Enable data label
+                              //           dataLabelSettings:
+                              //               DataLabelSettings(isVisible: true))
+                              //     ]),
                               SizedBox(height: 20),
-                              SizedIconButton(
-                                color: const Color(0xff764abc),
-                                icon: Icon(
-                                  Icons.qr_code_2,
-                                  color: Colors.white,
-                                  size: 88,
-                                ),
-                                onPressed: () => scanQR(context),
-                              ),
+                              // SizedIconButton(
+                              //   color: const Color(0xff764abc),
+                              //   icon: Icon(
+                              //     Icons.qr_code_2,
+                              //     color: Colors.white,
+                              //     size: 88,
+                              //   ),
+                              //   onPressed: () => scanQR(context),
+                              // ),
                               SizedBox(height: 20),
-                              SizedIconButton(
-                                color: const Color(0xff764abc),
-                                icon: Icon(
-                                  CupertinoIcons.barcode,
-                                  color: Colors.white,
-                                  size: 88,
-                                ),
-                                onPressed: () => scanBarcodeNormal(context),
-                              ),
+                              // SizedIconButton(
+                              //   color: const Color(0xff764abc),
+                              //   icon: Icon(
+                              //     CupertinoIcons.barcode,
+                              //     color: Colors.white,
+                              //     size: 88,
+                              //   ),
+                              //   onPressed: () => scanBarcodeNormal(context),
+                              // ),
                               SizedBox(height: 20),
                             ]));
                   } else if (snapshot.hasError) {

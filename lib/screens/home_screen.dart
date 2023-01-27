@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner_example/screens/confirmation_screen.dart';
-import 'package:flutter_barcode_scanner_example/screens/login_screen.dart';
-import 'package:flutter_barcode_scanner_example/screens/secure_screen.dart';
-import 'package:flutter_barcode_scanner_example/screens/signup_screen.dart';
+import 'package:abax/screens/confirmation_screen.dart';
+import 'package:abax/screens/login_screen.dart';
+import 'package:abax/screens/secure_screen.dart';
+import 'package:abax/screens/signup_screen.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key, this.title}) : super(key: key);
