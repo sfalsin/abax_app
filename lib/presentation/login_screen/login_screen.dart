@@ -345,23 +345,23 @@ class LoginScreen extends GetWidget<LoginController> {
                             ]))))));
   }
 
-  onTapBtntf() async {
-    await GoogleAuthHelper().googleSignInProcess().then((googleUser) {
-      if (googleUser != null) {
-        //TODO Actions to be performed after signin
-      } else {
-        Get.snackbar('Error', 'user data is empty');
-      }
-    }).catchError((onError) {
-      Get.snackbar('Error', onError.toString());
-    });
-  }
-
-  onTapBtntf1() async {
-    await FacebookAuthHelper().facebookSignInProcess().then((facebookUser) {
-      //TODO Actions to be performed after signin
-    }).catchError((onError) {
-      Get.snackbar('Error', onError.toString());
-    });
-  }
+  // onTapBtntf() async {
+  //   await GoogleAuthHelper().googleSignInProcess().then((googleUser) {
+  //     if (googleUser != null) {
+  //       //TODO Actions to be performed after signin
+  //     } else {
+  //       Get.snackbar('Error', 'user data is empty');
+  //     }
+  //   }).catchError((onError) {
+  //     Get.snackbar('Error', onError.toString());
+  //   });
+  // }
+  //
+  // onTapBtntf1() async {
+  //   await FacebookAuthHelper().facebookSignInProcess().then((facebookUser) {
+  //     //TODO Actions to be performed after signin
+  //   }).catchError((onError) {
+  //     Get.snackbar('Error', onError.toString());
+  //   });
+  // }
 }
