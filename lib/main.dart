@@ -7,8 +7,20 @@ import 'package:abax/services/user_service.dart';
 
 import 'core/app_export.dart';
 
-void main() {
+
+final _userService = UserService(userPool);
+User _user = User();
+bool _isAuthenticated = false;
+
+Future<UserService> _getValues() async {
+  await _userService.init();
+  _isAuthenticated = await _userService.checkAuthenticated();
+  return _userService;
+}
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _getValues();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((value) {
@@ -20,19 +32,13 @@ void main() {
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
-  final _userService = UserService(userPool);
-  User _user = User();
-  bool _isAuthenticated = false;
 
-  Future<UserService> _getValues() async {
-    await _userService.init();
-    _isAuthenticated = await _userService.checkAuthenticated();
-    return _userService;
-  }
+
+
 
   @override
-  Widget build(BuildContext context) {
-    _getValues();
+  Widget build(BuildContext context)  {
+
     String routeStart = AppRoutes.initialRoute;
     if (_isAuthenticated) {
       routeStart = '/android_large_one_screen';

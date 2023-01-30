@@ -102,7 +102,9 @@ class AndroidLargeTwoScreen extends GetWidget<AndroidLargeTwoController> {
         bool registered = await couponRegister(context, args2);
         if (registered) {
           debugPrint("registered!");
-          debugPrint(_scanBarcode);
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(_scanBarcode["message"])));
+          debugPrint(_scanBarcode["message"]);
         }
       }
 

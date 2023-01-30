@@ -241,11 +241,16 @@ class LoginScreen extends GetWidget<LoginController> {
                                   child: Padding(
                                       padding: getPadding(
                                           left: 20, top: 20, right: 20),
-                                      child: Text("msg_esqueci_minha_senha".tr,
+                                      child:  new GestureDetector(
+                                          onTap: () {
+                                            Navigator.pushNamed(context, "/esqueci_minha_senha_screen");
+                                          },
+                                          child: Text("msg_esqueci_minha_senha".tr,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.left,
                                           style: AppStyle.txtInterSemiBold14
-                                              .copyWith(height: 1.21)))),
+                                              .copyWith(height: 1.21)))
+                                  )),
                               CustomButton(
                                   onTap: () => submit(context),
                                   width: 328,
