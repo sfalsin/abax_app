@@ -143,7 +143,7 @@ class LoginScreen extends GetWidget<LoginController> {
                                                 child: Padding(
                                                     padding: getPadding(
                                                         right: 37, bottom: 2),
-                                                    child: Text("lbl_a_bax".tr,
+                                                    child: Text("A BAX",
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         textAlign:
