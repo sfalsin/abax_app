@@ -143,14 +143,21 @@ class LoginScreen extends GetWidget<LoginController> {
                                                 child: Padding(
                                                     padding: getPadding(
                                                         right: 37, bottom: 2),
-                                                    child: Text("A BAX",
+                                                    child: CommonImageView(
+                                                        imagePath: 'assets/images/img_logo.png',
+                                                        height: getVerticalSize(
+                                                            140.00),
+                                                        width: getHorizontalSize(
+                                                            360.00))
+                                                    /*Text("A BAX",
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         textAlign:
                                                             TextAlign.left,
                                                         style: AppStyle
-                                                            .txtAudiowideRegular5867))),
-                                            Align(
+                                                            .txtAudiowideRegular5867)*/
+                                                )),
+                                            /*Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Container(
                                                     height: getSize(74.00),
@@ -167,7 +174,7 @@ class LoginScreen extends GetWidget<LoginController> {
                                                                 .lime900,
                                                             width:
                                                                 getHorizontalSize(
-                                                                    2.29)))))
+                                                                    2.29))))) */
                                           ]))),
                               Padding(
                                   padding:
