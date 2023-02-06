@@ -13,7 +13,6 @@ import 'package:abax/widgets/app_bar/custom_app_bar.dart';
 import 'package:abax/widgets/custom_button.dart';
 
 class MenuScreen extends GetWidget<MenuController> {
-
   final _userService = UserService(userPool);
   late CouponService _couponService;
   late AwsSigV4Client _awsSigV4Client;
@@ -23,18 +22,15 @@ class MenuScreen extends GetWidget<MenuController> {
   late Future<bool> callData;
 
   Future<bool> _getValues(context) async {
-
-      await _userService.init();
-      _isAuthenticated = await _userService.checkAuthenticated();
-      if (_isAuthenticated) {
-          _user = await _userService.getCurrentUser();
-          userName = _user!.email.toString();
-          return true;
-      }
-      return false;
-
+    await _userService.init();
+    _isAuthenticated = await _userService.checkAuthenticated();
+    if (_isAuthenticated) {
+      _user = await _userService.getCurrentUser();
+      userName = _user!.email.toString();
+      return true;
+    }
+    return false;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +64,9 @@ class MenuScreen extends GetWidget<MenuController> {
                   AppbarImage(
                       height: getVerticalSize(22.00),
                       width: getHorizontalSize(23.00),
-                      onTap: (){ Navigator.of(context).pop(); },
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
                       svgPath: ImageConstant.imgClose,
                       margin:
                           getMargin(left: 16, top: 21, right: 16, bottom: 21))
@@ -97,26 +95,32 @@ class MenuScreen extends GetWidget<MenuController> {
                           alignment: Alignment.centerLeft,
                           child: Padding(
                               padding: getPadding(left: 16, top: 14, right: 16),
-                              child:
-    FutureBuilder<bool>(
-    future: callData,
-    builder: (context, snapshot) {
-    if (snapshot.hasData) { return Text(userName,
-    overflow: TextOverflow.ellipsis,
-    textAlign: TextAlign.left,
-    style: AppStyle.txtInterSemiBold20Gray101
-        .copyWith(height: 1.25));} else { return Text(userName,
-    overflow: TextOverflow.ellipsis,
-    textAlign: TextAlign.left,
-    style: AppStyle.txtInterSemiBold20Gray101
-        .copyWith(height: 1.25));}})
+                              child: FutureBuilder<bool>(
+                                  future: callData,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(userName,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.left,
+                                          style: AppStyle
+                                              .txtInterSemiBold20Gray101
+                                              .copyWith(height: 1.25));
+                                    } else {
+                                      return Text(userName,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.left,
+                                          style: AppStyle
+                                              .txtInterSemiBold20Gray101
+                                              .copyWith(height: 1.25));
+                                    }
+                                  })
                               // Text("msg_joana_dos_santos".tr,
                               //     overflow: TextOverflow.ellipsis,
                               //     textAlign: TextAlign.left,
                               //     style: AppStyle.txtInterSemiBold20Gray101
                               //         .copyWith(height: 1.25))
 
-                          )),
+                              )),
                       Align(
                           alignment: Alignment.center,
                           child: Container(
@@ -134,19 +138,22 @@ class MenuScreen extends GetWidget<MenuController> {
                                   textAlign: TextAlign.left,
                                   style: AppStyle.txtInterMedium16Gray301
                                       .copyWith(height: 1.25)))),
-                              //(){ Navigator.of(context).pop(); }
-                          Align(
-                          alignment: Alignment.centerLeft,
-                          child: GestureDetector(
-                              onTap: () { Navigator.pushNamed(
-                                  context, '/cupons_lidos_screen');},
-                              child:Padding(
-                              padding: getPadding(left: 25, top: 44, right: 25),
-                              child: Text("lbl_minhas_compras".tr,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                  style: AppStyle.txtInterMedium16Gray301
-                                      .copyWith(height: 1.25))))),
+                      //(){ Navigator.of(context).pop(); }
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, '/cupons_lidos_screen');
+                          },
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                  padding:
+                                      getPadding(left: 25, top: 44, right: 25),
+                                  child: Text("lbl_minhas_compras".tr,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
+                                      style: AppStyle.txtInterMedium16Gray301
+                                          .copyWith(height: 1.25))))),
                       Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(

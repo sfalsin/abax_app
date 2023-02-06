@@ -28,7 +28,11 @@ Future<void> scanQR(context) async {
   }
   // });
 }
-
+String truncateString(int cutoff, String myString) {
+  return (myString.length <= cutoff)
+      ? myString
+      : '${myString.substring(0, cutoff)}...';
+}
 class SalesData {
   SalesData(this.year, this.sales);
   final String year;

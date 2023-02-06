@@ -61,6 +61,8 @@ import 'package:get/get.dart';
 
 import '../presentation/cupons_lidos_screen/binding/cupons_lidos_binding.dart';
 import '../presentation/cupons_lidos_screen/cupons_lidos_screen.dart';
+import '../presentation/produtos_cupons_lidos_screen/binding/produtos_cupons_lidos_binding.dart';
+import '../presentation/produtos_cupons_lidos_screen/produtos_cupons_lidos_screen.dart';
 import '../presentation/ranking_screen/binding/ranking_binding.dart';
 
 class AppRoutes {
@@ -124,6 +126,8 @@ class AppRoutes {
   static String perfilMeuEndereOScreen = '/perfil_meu_endere_o_screen';
 
   static String cuponsLidosScreen = '/cupons_lidos_screen';
+
+  static String produtosCuponsLidosScreen = '/produtos_cupons_lidos_screen';
 
   static String perfilMeuEndereOSixScreen = '/perfil_meu_endere_o_six_screen';
 
@@ -357,7 +361,14 @@ class AppRoutes {
         CuponsLidosBinding(),
       ],
     )
-
+    ,
+    GetPage(
+      name: produtosCuponsLidosScreen,
+      page: () => ProdutosCuponsLidosScreen(),
+      bindings: [
+        ProdutosCuponsLidosBinding(),
+      ],
+    )
 
   ];
 }

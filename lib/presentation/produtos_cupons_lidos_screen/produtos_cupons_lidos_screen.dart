@@ -4,6 +4,7 @@ import '../../helper.dart';
 import '../../models/user.dart';
 import '../../secrets.dart';
 import '../../services/coupon_service.dart';
+import '../../services/product_service.dart';
 import '../../services/user_service.dart';
 import 'controller/cupons_lidos_controller.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +13,41 @@ import 'package:abax/widgets/app_bar/appbar_image.dart';
 import 'package:abax/widgets/app_bar/appbar_title.dart';
 import 'package:abax/widgets/app_bar/custom_app_bar.dart';
 
-class CuponsLidosScreen extends GetWidget<CuponsLidosController> {
+
+
+class ProdutosCuponsLidosScreen extends GetWidget<ProdutosCuponsLidosController> {
   var pwdWidgets = <Widget>[];
   late Future<bool> callData;
   final _userService = UserService(userPool);
-  late CouponService _couponService;
+  late ProductService _productService;
   late AwsSigV4Client _awsSigV4Client;
   User? _user = User();
   bool _isAuthenticated = false;
 
   Future<bool> _getValues(context) async {
-    String barcodeScanRes;
+    String args2 = "";
+    try {
+      final args = ModalRoute
+          .of(context)!
+          .settings
+          .arguments;
+      if (args != null) {
+        args2 =  ModalRoute
+            .of(context)!
+            .settings
+            .arguments as String;
+        // bool registered = await couponRegister(context, args2);
+        // if (registered) {
+        //   debugPrint("registered!");
+        //   ScaffoldMessenger.of(context)
+        //       .showSnackBar(SnackBar(content: Text(_scanBarcode["message"])));
+        //   debugPrint(_scanBarcode["message"]);
+        // }
+      }
+
+    } on Exception {
+
+    }
     try {
       await _userService.init();
       _isAuthenticated = await _userService.checkAuthenticated();
@@ -44,21 +69,17 @@ class CuponsLidosScreen extends GetWidget<CuponsLidosController> {
           );
 
           // get previous count
-          _couponService = CouponService(_awsSigV4Client);
+          _productService = ProductService(_awsSigV4Client);
 
           try {
             pwdWidgets.add(makeTitle());
-            for (var item in await _couponService.getMyCoupons(accessToken)) {
+            for (var item in await _productService.getMyProductsCoupon(args2,accessToken)) {
               print(item);
-              pwdWidgets.add(makeCoupon(context,
-                  item["data_emissao"] + " | " + item["valor_total"].toString(),
-                  item["marketplace"]["razao_social"] +
-                      "," +
-                      item["marketplace"]["bairro"] +
-                      "," +
-                      item["marketplace"]["cidade"] +
-                      "," +
-                      item["marketplace"]["uf"],item["id"]));
+              pwdWidgets.add(makeCoupon(
+                  truncateString(30,item["name"]),
+                  item["valor_emitente"].toString() +
+                      "   " +
+                      item["qtd_emitente"].toString()));
             }
           } catch (e) {
             ScaffoldMessenger.of(context)
@@ -68,7 +89,8 @@ class CuponsLidosScreen extends GetWidget<CuponsLidosController> {
       }
       return true;
     } on Exception {
-      barcodeScanRes = 'Failed to get platform version.';
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Erro desconhecido!")));
       return false;
     }
   }
@@ -293,7 +315,7 @@ class CuponsLidosScreen extends GetWidget<CuponsLidosController> {
                           ])))),
               Padding(
                   padding: getPadding(left: 90, top: 7, bottom: 3),
-                  child: Text("Compras",
+                  child: Text("Produtos",
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
                       style: AppStyle.txtInterSemiBold20Gray802
@@ -301,10 +323,10 @@ class CuponsLidosScreen extends GetWidget<CuponsLidosController> {
             ]));
   }
 
-  Widget makeCoupon(context, String title, String msg, String id) {
+  Widget makeCoupon(String title, String msg) {
     return new GestureDetector(
         onTap: () {
-          onTapRowprice(context, id);
+          onTapRowprice();
         },
         child: Container(
             margin: getMargin(top: 12),
@@ -324,29 +346,7 @@ class CuponsLidosScreen extends GetWidget<CuponsLidosController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Card(
-                      clipBehavior: Clip.antiAlias,
-                      elevation: 0,
-                      margin: getMargin(top: 10, bottom: 15),
-                      color: ColorConstant.whiteA700,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadiusStyle.roundedBorder31),
-                      child: Container(
-                          height: getSize(63.00),
-                          width: getSize(63.00),
-                          decoration: AppDecoration.fillWhiteA700.copyWith(
-                              borderRadius: BorderRadiusStyle.roundedBorder31),
-                          child: Stack(children: [
-                            Align(
-                                alignment: Alignment.center,
-                                child: Padding(
-                                    padding: getPadding(
-                                        left: 7, top: 14, right: 8, bottom: 13),
-                                    child: CommonImageView(
-                                        imagePath: ImageConstant.imgGroup20,
-                                        height: getVerticalSize(36.00),
-                                        width: getHorizontalSize(48.00))))
-                          ]))),
+
                   Padding(
                       padding: getPadding(top: 13, bottom: 18),
                       child: Column(
@@ -355,7 +355,7 @@ class CuponsLidosScreen extends GetWidget<CuponsLidosController> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                                padding: getPadding(right: 10),
+                                padding: getPadding(left: 0, right: 0),
                                 child: Text(title,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.left,
@@ -378,13 +378,7 @@ class CuponsLidosScreen extends GetWidget<CuponsLidosController> {
                                               textAlign: TextAlign.left,
                                               style: AppStyle
                                                   .txtRobotoRomanRegular14)),
-                                      Padding(
-                                          padding: getPadding(bottom: 19),
-                                          child: CommonImageView(
-                                              svgPath:
-                                                  ImageConstant.imgArrowright,
-                                              height: getVerticalSize(12.00),
-                                              width: getHorizontalSize(6.00)))
+
                                     ]))
                           ]))
                 ])));
@@ -398,12 +392,12 @@ class CuponsLidosScreen extends GetWidget<CuponsLidosController> {
     Get.back();
   }
 
-  onTapRowprice(context, String id) {
-    Navigator.pushNamed(context,'/produtos_cupons_lidos_screen',arguments: id);
+  onTapRowprice() {
+    //Get.toNamed(AppRoutes.ProdutosCuponsLidosSixScreen);
   }
 
   onTapRowpricetwo() {
-    //Get.toNamed(AppRoutes.CuponsLidosThreeScreen);
+    //Get.toNamed(AppRoutes.ProdutosCuponsLidosThreeScreen);
   }
 
   onTapMenu18() {

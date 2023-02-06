@@ -70,4 +70,24 @@ class ProductService {
 
   }
 
+  Future<dynamic> getMyProductsCoupon(String key, [CognitoUserSession? accessToken]) async {
+    final SigV4Request signedRequest = new SigV4Request(awsSigV4Client, method: 'GET', path: '/myproductscoupon/'+key);
+    final url = signedRequest.url;
+
+    Map<String, String>? headers;
+    if (signedRequest.headers != null) {
+      headers = Map.from(signedRequest.headers!);
+    }
+    var a = accessToken?.getAccessToken().getJwtToken();
+    headers!["Authorization"] = "Bearer "+a!;
+    final response = await http.get(Uri.parse(url!), headers: headers);
+    if (response.statusCode == 200) {
+      print(response.body);
+      return json.decode(response.body);
+    } else {
+      Map erro = {'erro':response.statusCode.toString()};
+      return json.decode(json.encode(erro));
+    }
+
+  }
 }
